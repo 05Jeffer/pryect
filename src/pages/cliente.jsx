@@ -10,7 +10,14 @@ function Cliente() {
   const [showForm, setShowForm] = useState(true);
   const [showTable, setShowTable] = useState(false);
   const [data, setData] = useState([]);
-  
+
+  const checkLoggedIn = () => {
+    const loggedIn = localStorage.getItem('loggedIn');
+    if (loggedIn === 'true') {
+      setShowForm(false);
+      setShowTable(true);
+    }
+  };
 
   const fetchData = async () => {
     try {
@@ -26,31 +33,57 @@ function Cliente() {
     const enteredPassword = passwordInput.value;
 
     if (enteredPassword === '1578') {
-      // Contraseña correcta, puedes continuar con el proceso de inicio de sesión
       Swal.fire({
         icon: 'success',
         title: 'Inicio de sesion correcto',
         showConfirmButton: false,
-        timer: 1500, // Auto-close the alert after 1.5 seconds
+        timer: 1500,
       });
       setShowForm(false);
       setShowTable(true);
-      // Aquí puedes agregar más lógica si es necesario
+      localStorage.setItem('loggedIn', 'true');
     } else {
       Swal.fire({
         icon: 'error',
         title: 'Contraseña Incorrecta',
-        
       });
       setShowForm(false);
     }
   };
 
+  const handleSignOut = () => {
+    // Mostrar un cuadro de diálogo SweetAlert2 antes de cerrar sesión
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Cerrar sesión eliminará tus datos de la tabla.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, cerrar sesión',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Limpiar el estado de inicio de sesión y regresar al formulario
+        localStorage.removeItem('loggedIn');
+        setShowForm(true);
+        setShowTable(false);
+        Swal.fire({
+          icon: 'success',
+          title: '¡Sesión cerrada!',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    });
+  }; 
   
+
   useEffect(() => {
+    checkLoggedIn();
     fetchData();
-  
-      }, []);
+  }, []);
+
   return (
     <div className="relative">
     <img src={carr5} alt="carros" className="absolute inset-0 w-full h-full object-cover z-0"/>
@@ -118,8 +151,10 @@ function Cliente() {
                       <th scope="col" className="sticky top-0 px-6 py-3 bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                           E-MAIL
                       </th>
-                      <th scope="col" className="sticky top-0 px-8 py-3 bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+                      <th scope="col" className="flex items-center  top-0 px-0 py-3 bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                           <Agregar_cliente/>
+                          <button className="ml-2 mr-2 bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-2 rounded focus:outline-none focus:shadow-outline"
+                      onClick={handleSignOut}>Cerrar Sesion</button>
                       </th>
                   </tr>
               </thead>
@@ -146,7 +181,6 @@ function Cliente() {
         )}
       </div>
       </div>
-    
   );
 }
 

@@ -70,10 +70,9 @@ function Agregar_cliente() {
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <div>
         <button
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-3 rounded focus:outline-none focus:shadow-outline"
           type="button"
-          onClick={() => setShowAddForm(true)}
-        >
+          onClick={() => setShowAddForm(true)}>
           Agregar
         </button>
       </div>
@@ -163,7 +162,7 @@ function Agregar_cliente() {
 
       <div className="flex items-center justify-between mt-4">
         <button
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-3 rounded focus:outline-none focus:shadow-outline"
           type="button"
           onClick={addClient}
         >
